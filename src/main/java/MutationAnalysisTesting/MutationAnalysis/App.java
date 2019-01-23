@@ -1,42 +1,39 @@
 package MutationAnalysisTesting.MutationAnalysis;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 
-/**
- * Hello world!
- *
- */
-public class App {
-	public static void main(String[] args) {
+import org.objectweb.asm.ClassReader;
+import org.objectweb.asm.ClassVisitor;
+import org.objectweb.asm.MethodVisitor;
+import static org.objectweb.asm.Opcodes.ASM5;
 
-		// The name of the file to open.
-		String fileName = "temp.txt";
+import javassist.ClassPool;
+import javassist.CodeConverter;
+import javassist.CtClass;
+import javassist.CtMethod;
+import javassist.NotFoundException;
+import javassist.bytecode.CodeAttribute;
+import javassist.bytecode.Opcode;
 
-		// This will reference one line at a time
-		String line = null;
+public class App extends ClassVisitor{
+    public App(int api) {
+        super(api);
+    }
 
-		try {
-			// FileReader reads text files in the default encoding.
-			FileReader fileReader = new FileReader(fileName);
+    @Override
+    public MethodVisitor visitMethod(int access, String name, String desc, String signature, String[] exceptions) {
+        System.out.println(String.format("%s %s", name, desc));
+        return super.visitMethod(access, name, desc, signature, exceptions);
+    }
 
-			// Always wrap FileReader in BufferedReader.
-			BufferedReader bufferedReader = new BufferedReader(fileReader);
+    public static void main(String... args) throws IOException {
 
-			while ((line = bufferedReader.readLine()) != null) {
-				System.out.println(line);
-			}
+        // Intended to be executed from the root of the project
 
-			// Always close files.
-			bufferedReader.close();
-		} catch (FileNotFoundException ex) {
-			System.out.println("Unable to open file '" + fileName + "'");
-		} catch (IOException ex) {
-			System.out.println("Error reading file '" + fileName + "'");
-			// Or we could just do this:
-			// ex.printStackTrace();
-		}
-	}
+        FileInputStream file = new FileInputStream("/home/mj/vv-workspace/code-manipulation/manipulation-target/target/classes/m2/vv/tutorial/Functions.class");
+        ClassReader reader = new ClassReader(file);
+        reader.accept(new App(ASM5), 0);
+
+    }
 }
