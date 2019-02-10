@@ -3,5 +3,5 @@
 .project
 .settings/*
 src/main/java/MutationAnalysisTesting/MutationAnalysis/temp
-results/*
-bin/*
+*.csv
+bin
