@@ -12,15 +12,15 @@ public class Mutation {
 
     private String mutationOperation;
     private int mutationOperationCode;
+    private String mutationType;
 
-
-    public Mutation(String targetOperation, int targetOperationCode, String mutationOperation, int mutationOperationCode) {
+    public Mutation(String targetOperation, int targetOperationCode, String mutationOperation, int mutationOperationCode, String typeMutation) {
         this.targetOperation = targetOperation;
         this.targetOperationCode = targetOperationCode;
-
+        
         this.mutationOperation = mutationOperation;
         this.mutationOperationCode = mutationOperationCode;
-
+        this.setMutationType(typeMutation);
         
     }
 
@@ -41,4 +41,12 @@ public class Mutation {
     public String toString() {
         return "Mutation{  "+targetOperation+"#"+targetOperationCode+" -> "+mutationOperation+"#"+mutationOperationCode+" }";
     }
+
+	public String getMutationType() {
+		return mutationType;
+	}
+
+	public void setMutationType(String mutationType) {
+		this.mutationType = mutationType;
+	}
 }
