@@ -1,5 +1,7 @@
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * TestRunner is in charge to run tests on the target project defined in the
@@ -87,6 +89,31 @@ public class TestRunner {
 			throw new Exception("Project path is not in TestRunner");
 		}
 
+	}
+
+	public void execute() throws Exception{
+		verifyTestRunnerForExecution();
+
+		runTest();
+	}
+
+	private void runTest() throws Exception {
+		ProcessBuilder ps = new ProcessBuilder("mvn", "surefire:test");
+		ps.redirectErrorStream(true);
+		if (rootProjectPath.substring(0, 1).equalsIgnoreCase(".")) {
+			ps.directory(new File(System.getProperty("user.dir") + Mutator.PATH_DELIMITER + rootProjectPath));
+		} else {
+			ps.directory(new File(rootProjectPath));
+		}
+
+		Process process = ps.start();
+
+		if (!process.waitFor(5, TimeUnit.MINUTES)) {
+			process.destroy();
+		} else {
+			process.waitFor();
+			int returnValue = process.exitValue();
+		}
 	}
 
 }
