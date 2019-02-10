@@ -4,6 +4,7 @@ package main;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import mutator.ClassParser;
 import mutator.Mutator;
 import results.Result;
 import testRunner.TestRunner;
@@ -15,7 +16,7 @@ public class Main {
 	private static Logger logger = LoggerFactory.getLogger(Main.class);
 
 	// Default values for classes and test classes directories
-	private static String rootPath = "./manipulation-target/";
+	private static String rootPath = "/home/mj/vv-workspace/manipulation-target/";
 	private static String classesPath = rootPath + "target/classes";
 	private static String testClassesPath = rootPath + "target/classes";
 
