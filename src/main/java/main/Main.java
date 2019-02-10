@@ -14,9 +14,8 @@ import java.util.List;
 public class Main {
 
 	private static Logger logger = LoggerFactory.getLogger(Main.class);
-
-	// Default values for classes and test classes directories
-	private static String rootPath = "/home/mj/vv-workspace/manipulation-target/";
+	// to define the rootPath
+	private static String rootPath = "./";
 	private static String classesPath = rootPath + "target/classes";
 	private static String testClassesPath = rootPath + "target/classes";
 
