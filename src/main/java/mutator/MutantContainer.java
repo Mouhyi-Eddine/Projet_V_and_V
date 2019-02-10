@@ -1,5 +1,6 @@
+package mutator;
 
-class MutantContainer {
+public class MutantContainer {
 	private String mutantClass;
 	private String methodName;
 	private String mutantType;

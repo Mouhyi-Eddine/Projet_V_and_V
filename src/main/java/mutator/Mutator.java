@@ -1,8 +1,10 @@
+package mutator;
 
 import javassist.ClassPool;
 import javassist.CtClass;
 import javassist.CtMethod;
 import javassist.bytecode.*;
+import testRunner.TestRunner;
 
 import java.io.FileInputStream;
 import java.util.ArrayList;
@@ -108,7 +110,7 @@ public class Mutator {
 				bytecode.add(mutation.getMutationOperationCode());
 				ci.write(bytecode.get(), index);
 
-				// Writing file into the physical file
+				
 				logger.debug("Writing class file : {}", ctClass.getClassFile().getName());
 
 				ctClass.writeFile(classesPath);
@@ -126,7 +128,7 @@ public class Mutator {
 		runTest(ctClass.getName(), method, m);
 		ctClass.defrost();
 
-		// Perform the undo
+		
 		Bytecode baseMutant = new Bytecode(cf.getConstPool());
 		baseMutant.add(baseCode);
 		ci.write(baseMutant.get(), index);

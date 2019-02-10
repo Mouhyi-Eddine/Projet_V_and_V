@@ -1,6 +1,12 @@
+package main;
+
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import mutator.Mutator;
+import results.Result;
+import testRunner.TestRunner;
 
 import java.util.List;
 
@@ -9,7 +15,7 @@ public class Main {
 	private static Logger logger = LoggerFactory.getLogger(Main.class);
 
 	// Default values for classes and test classes directories
-	private static String rootPath = "./vv-workspace/manipulation-target/";
+	private static String rootPath = "./manipulation-target/";
 	private static String classesPath = rootPath + "target/classes";
 	private static String testClassesPath = rootPath + "target/classes";
 
@@ -22,7 +28,7 @@ public class Main {
 		logger.info("  | Test classes root directory : {}", testClassesPath);
 		logger.info("========================================================================");
 
-		// Project parsing to find classes list
+		
 		ClassParser classParser = new ClassParser();
 		List<Class> classList = classParser.getClassesFromDirectory(classesPath);
 		List<Class> testClassList = classParser.getClassesFromDirectory(testClassesPath);
@@ -53,13 +59,7 @@ public class Main {
 		result.generateCSV();
 	}
 
-	/**
-	 * Static method defines project directories (classes directory and test classes
-	 * directory This method presumes that project is built with a maven
-	 * architecture
-	 *
-	 * @param args : Main arguments
-	 */
+	
 	private static void definePaths(String[] args) {
 		if (args != null && args.length >= 1 && args[0] != null) {
 			rootPath = args[0];

@@ -1,3 +1,6 @@
+package main;
+
+
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -58,7 +61,6 @@ public class ClassParser {
 
 			loadingDirectoryClasses(directoryClass, classesName, loadedClasses, urls);
 		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

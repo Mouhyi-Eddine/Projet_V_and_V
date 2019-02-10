@@ -1,10 +1,6 @@
+package mutator;
 
 
-
-
-/**
- * Mutation class describes mutation information use by the mutator
- */
 public class Mutation {
 
     private String targetOperation;

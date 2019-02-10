@@ -1,3 +1,4 @@
+package testRunner;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -6,13 +7,13 @@ import java.util.concurrent.TimeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import mutator.MutantContainer;
+import mutator.Mutator;
+import results.Report;
+import results.Result;
 
-/**
- * TestRunner is in charge to run tests on the target project defined in the
- * Main
- * <p>
- * The execute() call is sent by the Mutator
- */
+
+
 public class TestRunner {
 
 	private static final Logger logger = LoggerFactory.getLogger(TestRunner.class);
@@ -27,9 +28,7 @@ public class TestRunner {
 
 	private Result result;
 
-	/**
-	 * Constructor instantiates list classes
-	 */
+	
 	public TestRunner() {
 		classes = new ArrayList<>();
 		testClasses = new ArrayList<>();
@@ -136,7 +135,7 @@ public class TestRunner {
         }
         else{
             process.waitFor();
-            int returnValue = process.exitValue(); //This block the execution but it is expected
+            int returnValue = process.exitValue(); 
             result.addReport(new Report(returnValue == 0, mutantContainer));
         }
 	}

@@ -1,8 +1,7 @@
+package results;
+import mutator.MutantContainer;
 
-/**
- * Report describes informations from execution of test classes with a mutated
- * class
- */
+
 public class Report {
 
 	private boolean isMutantAlive;
