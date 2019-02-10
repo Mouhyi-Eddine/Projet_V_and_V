@@ -3,6 +3,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 /**
  * TestRunner is in charge to run tests on the target project defined in the
  * Main
@@ -11,7 +15,7 @@ import java.util.concurrent.TimeUnit;
  */
 public class TestRunner {
 
-//    private static final Logger logger = java.util.logging.Logger.getLogger(TestRunner.class);
+	private static final Logger logger = LoggerFactory.getLogger(TestRunner.class);
 
 	private List<Class> classes;
 
@@ -20,6 +24,8 @@ public class TestRunner {
 	private String rootProjectPath;
 
 	private MutantContainer mutantContainer;
+
+	private Result result;
 
 	/**
 	 * Constructor instantiates list classes
@@ -37,12 +43,19 @@ public class TestRunner {
 		for (Class classString : classes) {
 			addClass(classString);
 		}
+		if (classes.isEmpty()) {
+			logger.warn("No classes loaded during this setter call");
+		} else {
+			logger.debug("{} classes are loaded in TestRunner", classes.size());
+		}
 	}
 
 	private void addClass(Class clazz) {
 		if (classes == null) {
 			classes = new ArrayList<>();
 		}
+		logger.trace("Adding {} to TestRunner classes collection", clazz);
+
 		classes.add(clazz);
 	}
 
@@ -53,6 +66,11 @@ public class TestRunner {
 	public void setTestClasses(List<Class> testClasses) {
 		for (Class testClass : testClasses) {
 			addTestClass(testClass);
+		}
+		if (testClasses.isEmpty()) {
+			logger.warn("No test classes loaded during this setter call");
+		} else {
+			logger.debug("{} test classes are loaded in TestRunner", classes.size());
 		}
 	}
 
@@ -76,6 +94,8 @@ public class TestRunner {
 	}
 
 	private void verifyTestRunnerForExecution() throws Exception {
+        logger.trace("TestRunner checking");
+
 		if (classes == null || classes.isEmpty()) {
 			throw new Exception("Project classes are not in TestRunner");
 		}
@@ -91,13 +111,15 @@ public class TestRunner {
 
 	}
 
-	public void execute() throws Exception{
+	public void execute() throws Exception {
 		verifyTestRunnerForExecution();
 
 		runTest();
 	}
 
 	private void runTest() throws Exception {
+        logger.debug("Starting testing with MAVEN on {}", rootProjectPath);
+
 		ProcessBuilder ps = new ProcessBuilder("mvn", "surefire:test");
 		ps.redirectErrorStream(true);
 		if (rootProjectPath.substring(0, 1).equalsIgnoreCase(".")) {
@@ -108,12 +130,23 @@ public class TestRunner {
 
 		Process process = ps.start();
 
-		if (!process.waitFor(5, TimeUnit.MINUTES)) {
-			process.destroy();
-		} else {
-			process.waitFor();
-			int returnValue = process.exitValue();
-		}
+		if(!process.waitFor(5, TimeUnit.MINUTES)){
+            logger.warn("The process takes too long : may be an infinite loop. It was destroyed.");
+            process.destroy();
+        }
+        else{
+            process.waitFor();
+            int returnValue = process.exitValue(); //This block the execution but it is expected
+            result.addReport(new Report(returnValue == 0, mutantContainer));
+        }
+	}
+
+	public Result getResult() {
+		return result;
+	}
+
+	public void setResult(Result result) {
+		this.result = result;
 	}
 
 }
